@@ -227,12 +227,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mt-4">
-                            <h3 class="mb-0">Tambah Jurusan</h3>
+                            <h3 class="mb-0">Edit Agama</h3>
                         </div>
                         <div class="col-sm-6 mt-3">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Tambah Jurusan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit Agama</li>
                             </ol>
                         </div>
                     </div>
@@ -251,24 +251,33 @@
                         <div class="col-md-12">
                             <div class="card card-info card-outline mb-12">
                                 <div class="card-header">
-                                    <div class="card-title">Tambah Jurusan</div>
+                                    <div class="card-title">Edit Agama</div>
                                 </div>
 
                                 <?php
                                 include "koneksi.php";
                                 $db = new Database();
 
-                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                    $nama_jurusan = $_POST['nama_jurusan'] ?? '';
+                                $id_agama = $_GET['id'] ?? '';
 
-                                    $query = "INSERT INTO jurusan (nama_jurusan) VALUES (?)";
+                                $query = "SELECT * FROM agama WHERE id_agama = ?";
+                                $stmt = $db->koneksi->prepare($query);
+                                $stmt->bind_param("i", $id_agama);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $data = $result->fetch_assoc();
+
+                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                    $nama_agama = $_POST['nama_agama'] ?? '';
+
+                                    $query = "UPDATE agama SET nama_agama = ? WHERE id_agama = ?";
                                     $stmt = $db->koneksi->prepare($query);
-                                    $stmt->bind_param("s", $nama_jurusan);
+                                    $stmt->bind_param("si", $nama_agama, $id_agama);
 
                                     if ($stmt->execute()) {
-                                        echo "<script>alert('Data jurusan berhasil ditambahkan!'); window.location='datajurusan.php';</script>";
+                                        echo "<script>alert('Data agama berhasil diperbarui!'); window.location='dataagama.php';</script>";
                                     } else {
-                                        echo "<script>alert('Gagal menambahkan data!');</script>";
+                                        echo "<script>alert('Gagal memperbarui data!');</script>";
                                     }
                                 }
                                 ?>
@@ -281,46 +290,44 @@
 
                                     .card {
                                         max-width: 600px;
-                                        margin: 0 auto;
+                                        margin: 50px auto;
                                     }
                                 </style>
-                                </head>
 
-                                <body>
-                                    <div class="shadow">
-                                        <div class="card-body">
-                                            <form method="POST" class="needs-validation" novalidate>
-                                                <div class="mb-3">
-                                                    <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                                                    <input type="text" class="form-control" id="nama_jurusan"
-                                                        name="nama_jurusan" required>
-                                                </div>
-                                                <div class="mt-4 d-flex justify-content-between">
-                                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                                    <a href="datajurusan.php" class="btn btn-secondary">Batal</a>
-                                                </div>
-                                            </form>
-                                        </div>
+                                <div class="shadow">
+                                    <div class="card-body">
+                                        <form method="POST" class="needs-validation" novalidate>
+                                            <div class="mb-3">
+                                                <label for="nama_agama" class="form-label">Nama Agama</label>
+                                                <input type="text" class="form-control" id="nama_agama"
+                                                    name="nama_agama" required
+                                                    value="<?= htmlspecialchars($data['nama_agama'] ?? '') ?>">
+                                            </div>
+                                            <div class="mt-4 d-flex justify-content-between">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <a href="dataagama.php" class="btn btn-secondary">Batal</a>
+                                            </div>
+                                        </form>
                                     </div>
+                                </div>
 
-                                    <script>
-                                        (() => {
-                                            "use strict";
-                                            const forms = document.querySelectorAll(".needs-validation");
-                                            Array.from(forms).forEach((form) => {
-                                                form.addEventListener("submit", (event) => {
-                                                    if (!form.checkValidity()) {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                    }
-                                                    form.classList.add("was-validated");
-                                                }, false);
-                                            });
-                                        })();
-                                    </script>
-
-                                </body>
-
+                                <script>
+                                    (() => {
+                                        "use strict";
+                                        const forms = document.querySelectorAll(".needs-validation");
+                                        Array.from(forms).forEach((form) => {
+                                            form.addEventListener("submit", (event) => {
+                                                if (!form.checkValidity()) {
+                                                    event.preventDefault();
+                                                    event.stopPropagation();
+                                                }
+                                                form.classList.add("was-validated");
+                                            }, false);
+                                        });
+                                    })();
+                                </script>
+                                <script
+                                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                             </div>
                         </div>
                     </div>

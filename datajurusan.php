@@ -234,7 +234,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Data Siswa</li>
+                                <li class="breadcrumb-item active" aria-current="page">Data Jurusan</li>
                             </ol>
                         </div>
                     </div>
@@ -258,7 +258,7 @@
                                 include "koneksi.php";
                                 $db = new database();
 
-                                $limit = 5;
+                                $limit = 10;
                                 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
                                 $offset = ($page - 1) * $limit;
 
@@ -429,7 +429,6 @@
                                                     <thead>
                                                         <tr>
                                                             <th>No</th>
-                                                            <th>Kode Jurusan</th>
                                                             <th>Nama Jurusan</th>
                                                             <th>Aksi</th>
                                                         </tr>
@@ -438,11 +437,10 @@
                                                         <?php foreach ($data_paginated as $jurusan): ?>
                                                             <tr>
                                                                 <td><?= $no++; ?></td>
-                                                                <td><?= $jurusan['kode_jurusan']; ?></td>
                                                                 <td><?= $jurusan['nama_jurusan']; ?></td>
                                                                 <td>
                                                                     <div class="btn-group">
-                                                                        <a href="edit_jurusan.php?kode=<?= $jurusan['kode_jurusan']; ?>"
+                                                                        <a href="editjurusan.php?kode=<?= $jurusan['kode_jurusan']; ?>"
                                                                             class="btn btn-info">
                                                                             <i class="fas fa-edit"></i> Edit
                                                                         </a>

@@ -227,12 +227,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mt-4">
-                            <h3 class="mb-0">Tambah Jurusan</h3>
+                            <h3 class="mb-0">Tambah Agama</h3>
                         </div>
                         <div class="col-sm-6 mt-3">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Tambah Jurusan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Tambah Agama</li>
                             </ol>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
                         <div class="col-md-12">
                             <div class="card card-info card-outline mb-12">
                                 <div class="card-header">
-                                    <div class="card-title">Tambah Jurusan</div>
+                                    <div class="card-title">Tambah Agama</div>
                                 </div>
 
                                 <?php
@@ -259,14 +259,14 @@
                                 $db = new Database();
 
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                    $nama_jurusan = $_POST['nama_jurusan'] ?? '';
+                                    $nama_agama = $_POST['nama_agama'] ?? '';
 
-                                    $query = "INSERT INTO jurusan (nama_jurusan) VALUES (?)";
+                                    $query = "INSERT INTO agama (nama_agama) VALUES (?)";
                                     $stmt = $db->koneksi->prepare($query);
-                                    $stmt->bind_param("s", $nama_jurusan);
+                                    $stmt->bind_param("s", $nama_agama);
 
                                     if ($stmt->execute()) {
-                                        echo "<script>alert('Data jurusan berhasil ditambahkan!'); window.location='datajurusan.php';</script>";
+                                        echo "<script>alert('Data agama berhasil ditambahkan!'); window.location='dataagama.php';</script>";
                                     } else {
                                         echo "<script>alert('Gagal menambahkan data!');</script>";
                                     }
@@ -281,7 +281,7 @@
 
                                     .card {
                                         max-width: 600px;
-                                        margin: 0 auto;
+                                        margin: 50px auto;
                                     }
                                 </style>
                                 </head>
@@ -291,13 +291,13 @@
                                         <div class="card-body">
                                             <form method="POST" class="needs-validation" novalidate>
                                                 <div class="mb-3">
-                                                    <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                                                    <input type="text" class="form-control" id="nama_jurusan"
-                                                        name="nama_jurusan" required>
+                                                    <label for="nama_agama" class="form-label">Nama Agama</label>
+                                                    <input type="text" class="form-control" id="nama_agama"
+                                                        name="nama_agama" required>
                                                 </div>
                                                 <div class="mt-4 d-flex justify-content-between">
                                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                                    <a href="datajurusan.php" class="btn btn-secondary">Batal</a>
+                                                    <a href="dataagama.php" class="btn btn-secondary">Batal</a>
                                                 </div>
                                             </form>
                                         </div>
@@ -318,7 +318,6 @@
                                             });
                                         })();
                                     </script>
-
                                 </body>
 
                             </div>

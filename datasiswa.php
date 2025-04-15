@@ -256,7 +256,7 @@
                 include "koneksi.php";
                 $db = new database();
 
-                $limit = 5;
+                $limit = 10;
                 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
                 $offset = ($page - 1) * $limit;
 
@@ -268,7 +268,7 @@
 
                 $no = $offset + 1;
                 ?>
-                
+
                 <style>
                   :root {
                     --blue: #007bff;
@@ -537,7 +537,7 @@
                             </thead>
                             <tbody>
                               <?php
-                            
+
                               foreach ($data_paginated as $x) {
                                 $jenis_kelamin = ($x['jenis_kelamin'] == 'P') ? 'Perempuan' : 'Laki-laki';
                                 ?>
@@ -556,7 +556,8 @@
                                       <a href="editsiswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-info">
                                         <i class="fas fa-edit fa-sm"></i> Edit
                                       </a>
-                                      <a href="hapus_siswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data siswa ini?')">
+                                      <a href="hapus_siswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Yakin ingin menghapus data siswa ini?')">
                                         <i class="fas fa-trash fa-sm"></i> Hapus
                                       </a>
                                     </div>
@@ -566,40 +567,40 @@
                             </tbody>
                           </table>
 
-                          
+
 
                         </div>
-                        
+
                       </div>
                       <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center">
-                              <?php if ($page > 1): ?>
-                                <li class="page-item">
-                                  <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                                </li>
-                              <?php endif; ?>
+                        <ul class="pagination justify-content-center">
+                          <?php if ($page > 1): ?>
+                            <li class="page-item">
+                              <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                          <?php endif; ?>
 
-                              <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                                </li>
-                              <?php endfor; ?>
+                          <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                              <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                          <?php endfor; ?>
 
-                              <?php if ($page < $total_pages): ?>
-                                <li class="page-item">
-                                  <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                                </li>
-                              <?php endif; ?>
-                            </ul>
-                          </nav>
+                          <?php if ($page < $total_pages): ?>
+                            <li class="page-item">
+                              <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          <?php endif; ?>
+                        </ul>
+                      </nav>
                     </div>
-                    
+
                   </section>
-                  
+
               </div>
 
               <!-- Bootstrap core JavaScript -->

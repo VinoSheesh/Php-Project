@@ -227,12 +227,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mt-4">
-                            <h3 class="mb-0">Tambah Jurusan</h3>
+                            <h3 class="mb-0">Edit Jurusan</h3>
                         </div>
                         <div class="col-sm-6 mt-3">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Tambah Jurusan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit Jurusan</li>
                             </ol>
                         </div>
                     </div>
@@ -251,24 +251,46 @@
                         <div class="col-md-12">
                             <div class="card card-info card-outline mb-12">
                                 <div class="card-header">
-                                    <div class="card-title">Tambah Jurusan</div>
+                                    <div class="card-title">Edit Jurusan</div>
                                 </div>
 
                                 <?php
                                 include "koneksi.php";
                                 $db = new Database();
 
+                                $kode_jurusan = $_GET['kode'] ?? '';
+
+                                if (!$kode_jurusan) {
+                                    echo "<script>alert('Kode jurusan tidak ditemukan!'); window.location='datajurusan.php';</script>";
+                                    exit();
+                                }
+
+                                // Ambil data jurusan dari database
+                                $query = "SELECT * FROM jurusan WHERE kode_jurusan = ?";
+                                $stmt = $db->koneksi->prepare($query);
+                                $stmt->bind_param("s", $kode_jurusan);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $data = $result->fetch_assoc();
+
+                                if (!$data) {
+                                    echo "<script>alert('Data jurusan tidak ditemukan!'); window.location='datajurusan.php';</script>";
+                                    exit();
+                                }
+
+                                // Proses update ketika form disubmit
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                    $nama_jurusan = $_POST['nama_jurusan'] ?? '';
+                                    $nama_jurusan = $_POST['nama_jurusan'];
 
-                                    $query = "INSERT INTO jurusan (nama_jurusan) VALUES (?)";
-                                    $stmt = $db->koneksi->prepare($query);
-                                    $stmt->bind_param("s", $nama_jurusan);
+                                    $updateQuery = "UPDATE jurusan SET nama_jurusan = ? WHERE kode_jurusan = ?";
+                                    $updateStmt = $db->koneksi->prepare($updateQuery);
+                                    $updateStmt->bind_param("ss", $nama_jurusan, $kode_jurusan);
 
-                                    if ($stmt->execute()) {
-                                        echo "<script>alert('Data jurusan berhasil ditambahkan!'); window.location='datajurusan.php';</script>";
+                                    if ($updateStmt->execute()) {
+                                        echo "<script>alert('Data jurusan berhasil diperbarui!'); window.location='datajurusan.php';</script>";
+                                        exit();
                                     } else {
-                                        echo "<script>alert('Gagal menambahkan data!');</script>";
+                                        echo "<script>alert('Gagal memperbarui data!');</script>";
                                     }
                                 }
                                 ?>
@@ -281,46 +303,50 @@
 
                                     .card {
                                         max-width: 600px;
-                                        margin: 0 auto;
+                                        margin: 50px auto;
+                                        border: none;
+                                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                                        border-radius: 12px;
                                     }
                                 </style>
                                 </head>
-
-                                <body>
-                                    <div class="shadow">
-                                        <div class="card-body">
-                                            <form method="POST" class="needs-validation" novalidate>
-                                                <div class="mb-3">
+                    
+                                    <div class="card-body">
+                                        <form method="POST" class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
                                                     <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
                                                     <input type="text" class="form-control" id="nama_jurusan"
-                                                        name="nama_jurusan" required>
+                                                        name="nama_jurusan"
+                                                        value="<?= htmlspecialchars($data['nama_jurusan'] ?? '') ?>"
+                                                        required>
                                                 </div>
-                                                <div class="mt-4 d-flex justify-content-between">
-                                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                                    <a href="datajurusan.php" class="btn btn-secondary">Batal</a>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-3 justify-content-end">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <a href="datajurusan.php" class="btn btn-secondary">Batal</a>
+                                            </div>
+                                        </form>
                                     </div>
+                                </div>
 
-                                    <script>
-                                        (() => {
-                                            "use strict";
-                                            const forms = document.querySelectorAll(".needs-validation");
-                                            Array.from(forms).forEach((form) => {
-                                                form.addEventListener("submit", (event) => {
-                                                    if (!form.checkValidity()) {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                    }
-                                                    form.classList.add("was-validated");
-                                                }, false);
-                                            });
-                                        })();
-                                    </script>
-
-                                </body>
-
+                                <script>
+                                    (() => {
+                                        "use strict";
+                                        const forms = document.querySelectorAll(".needs-validation");
+                                        Array.from(forms).forEach((form) => {
+                                            form.addEventListener("submit", (event) => {
+                                                if (!form.checkValidity()) {
+                                                    event.preventDefault();
+                                                    event.stopPropagation();
+                                                }
+                                                form.classList.add("was-validated");
+                                            }, false);
+                                        });
+                                    })();
+                                </script>
+                                <script
+                                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                             </div>
                         </div>
                     </div>

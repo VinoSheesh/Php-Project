@@ -221,112 +221,279 @@
         <!--end::Header-->
         <?php include("sidebar.php"); ?>
         <!--begin::App Main-->
-        <div class="content-wrapper">
+        <main class="app-main">
             <!--begin::App Content Header-->
             <div class="app-content-header">
+                <!--begin::Container-->
                 <div class="container-fluid">
+                    <!--begin::Row-->
                     <div class="row">
-                        <div class="col-sm-6 mt-4">
-                            <h3 class="mb-0">Tambah Jurusan</h3>
+                        <div class="col-sm-6">
+                            <h3 class="mb-0">Data Agama</h3>
                         </div>
-                        <div class="col-sm-6 mt-3">
+                        <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Tambah Jurusan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Data Agama</li>
                             </ol>
                         </div>
                     </div>
+                    <!--end::Row-->
                 </div>
+                <!--end::Container-->
             </div>
             <!--end::App Content Header-->
-
             <!--begin::App Content-->
             <div class="app-content">
+                <!--begin::Container-->
                 <div class="container-fluid">
-                    <div class="row g-4">
-                        <div class="col-12">
+                    <!--begin::Row-->
+                    <div class="row">
 
-                        </div>
-
+                        <!-- /.col -->
                         <div class="col-md-12">
-                            <div class="card card-info card-outline mb-12">
-                                <div class="card-header">
-                                    <div class="card-title">Tambah Jurusan</div>
-                                </div>
-
+                            <!-- /.card -->
+                            <div class="">
                                 <?php
                                 include "koneksi.php";
-                                $db = new Database();
+                                $db = new database();
 
-                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                    $nama_jurusan = $_POST['nama_jurusan'] ?? '';
+                                $limit = 10;
+                                $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                                $offset = ($page - 1) * $limit;
 
-                                    $query = "INSERT INTO jurusan (nama_jurusan) VALUES (?)";
-                                    $stmt = $db->koneksi->prepare($query);
-                                    $stmt->bind_param("s", $nama_jurusan);
+                                $all_data = $db->tampil_data_agama();
+                                $total_data = count($all_data);
+                                $total_pages = ceil($total_data / $limit);
+                                $data_paginated = array_slice($all_data, $offset, $limit);
 
-                                    if ($stmt->execute()) {
-                                        echo "<script>alert('Data jurusan berhasil ditambahkan!'); window.location='datajurusan.php';</script>";
-                                    } else {
-                                        echo "<script>alert('Gagal menambahkan data!');</script>";
-                                    }
-                                }
+                                $no = $offset + 1;
                                 ?>
 
                                 <style>
+                                    :root {
+                                        --primary: #007bff;
+                                        --info: #17a2b8;
+                                        --danger: #dc3545;
+                                        --light: #f8f9fa;
+                                    }
+
                                     body {
-                                        font-family: 'Poppins', sans-serif;
-                                        background-color: #f4f4f4;
+                                        font-family: 'Source Sans Pro', sans-serif;
+                                        background-color: #f4f6f9;
+                                        margin: 0;
+                                        padding: 0;
+                                    }
+
+                                    .content {
+                                        padding: 1rem;
+                                        max-width: 1000px;
+                                        margin: auto;
                                     }
 
                                     .card {
-                                        max-width: 600px;
-                                        margin: 0 auto;
+                                        background: #fff;
+                                        border-radius: 0.25rem;
+                                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                                        margin-top: 2rem;
+                                    }
+
+                                    .card-header {
+                                        padding: 1rem;
+                                        border-bottom: 1px solid #dee2e6;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                    }
+
+                                    .card-title {
+                                        font-size: 1.3rem;
+                                        font-weight: bold;
+                                    }
+
+                                    .card-body {
+                                        padding: 1rem;
+                                    }
+
+                                    .btn {
+                                        display: inline-block;
+                                        padding: 0.375rem 0.75rem;
+                                        border-radius: 0.25rem;
+                                        text-decoration: none;
+                                        font-size: 1rem;
+                                        cursor: pointer;
+                                    }
+
+                                    .btn-primary {
+                                        background-color: var(--primary);
+                                        color: #fff;
+                                    }
+
+                                    .btn-primary:hover {
+                                        background-color: #0056b3;
+                                    }
+
+                                    .btn-info {
+                                        background-color: var(--info);
+                                        color: #fff;
+                                    }
+
+                                    .btn-info:hover {
+                                        background-color: #117a8b;
+                                    }
+
+                                    .btn-danger {
+                                        background-color: var(--danger);
+                                        color: #fff;
+                                    }
+
+                                    .btn-danger:hover {
+                                        background-color: #c82333;
+                                    }
+
+                                    .table {
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                        margin-top: 1rem;
+                                    }
+
+                                    .table th,
+                                    .table td {
+                                        border: 1px solid #dee2e6;
+                                        padding: 0.75rem;
+                                        text-align: center;
+                                    }
+
+                                    .table thead th {
+                                        background-color: var(--light);
+                                    }
+
+                                    .btn-group {
+                                        display: flex;
+                                        gap: 5px;
+                                        justify-content: center;
+                                    }
+
+                                    .pagination {
+                                        display: flex;
+                                        justify-content: center;
+                                        list-style: none;
+                                        padding: 1rem 0;
+                                        gap: 5px;
+                                    }
+
+                                    .page-item a {
+                                        padding: 6px 12px;
+                                        color: #007bff;
+                                        border: 1px solid #dee2e6;
+                                        text-decoration: none;
+                                        border-radius: 4px;
+                                    }
+
+                                    .page-item.active a {
+                                        background-color: #007bff;
+                                        color: #fff;
+                                        border-color: #007bff;
+                                    }
+
+                                    .page-item.disabled a {
+                                        color: #6c757d;
+                                        pointer-events: none;
+                                    }
+
+                                    @media (max-width: 576px) {
+                                        .card-header {
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                        }
+
+                                        .btn-group {
+                                            flex-direction: column;
+                                        }
                                     }
                                 </style>
-                                </head>
 
                                 <body>
-                                    <div class="shadow">
-                                        <div class="card-body">
-                                            <form method="POST" class="needs-validation" novalidate>
-                                                <div class="mb-3">
-                                                    <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                                                    <input type="text" class="form-control" id="nama_jurusan"
-                                                        name="nama_jurusan" required>
+                                    <section class="">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Tabel Data Agama</h3>
+                                                <div class="card-tools">
+                                                    <a href="tambahagama.php" class="btn btn-primary">
+                                                        <i class="fas fa-plus"></i> Tambah Agama
+                                                    </a>
                                                 </div>
-                                                <div class="mt-4 d-flex justify-content-between">
-                                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                                    <a href="datajurusan.php" class="btn btn-secondary">Batal</a>
-                                                </div>
-                                            </form>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-striped table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Nama Agama</th>
+                                                            <th>Aksi</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach ($data_paginated as $agama): ?>
+                                                            <tr>
+                                                                <td><?= $no++; ?></td>
+                                                                <td><?= $agama['nama_agama']; ?></td>
+                                                                <td>
+                                                                    <div class="btn-group">
+                                                                        <a href="editagama.php?id=<?= $agama['id_agama']; ?>"
+                                                                            class="btn btn-info">
+                                                                            <i class="fas fa-edit"></i> Edit
+                                                                        </a>
+                                                                        <a href="hapus_agama.php?id=<?= $agama['id_agama']; ?>"
+                                                                            class="btn btn-danger"
+                                                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                                                            <i class="fas fa-trash"></i> Hapus
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav>
+                                                <ul class="pagination">
+                                                    <?php if ($page > 1): ?>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page=<?= $page - 1 ?>">&laquo;</a>
+                                                        </li>
+                                                    <?php endif; ?>
+
+                                                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                        <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                                                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                                                        </li>
+                                                    <?php endfor; ?>
+
+                                                    <?php if ($page < $total_pages): ?>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page=<?= $page + 1 ?>">&raquo;</a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                </ul>
+                                            </nav>
                                         </div>
-                                    </div>
-
-                                    <script>
-                                        (() => {
-                                            "use strict";
-                                            const forms = document.querySelectorAll(".needs-validation");
-                                            Array.from(forms).forEach((form) => {
-                                                form.addEventListener("submit", (event) => {
-                                                    if (!form.checkValidity()) {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                    }
-                                                    form.classList.add("was-validated");
-                                                }, false);
-                                            });
-                                        })();
-                                    </script>
-
+                                    </section>
                                 </body>
 
+                                <!-- /.card-body -->
                             </div>
+                            <!-- /.card -->
                         </div>
+                        <!-- /.col -->
                     </div>
+                    <!--end::Row-->
                 </div>
+                <!--end::Container-->
             </div>
-        </div>
+            <!--end::App Content-->
+        </main>
+        <!--end::App Main-->
         <!--begin::Footer-->
         <footer class="app-footer">
             <!--begin::To the end-->
