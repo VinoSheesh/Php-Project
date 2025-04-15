@@ -52,13 +52,13 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./tables/simple.html" class="nav-link">
+                    <a href="datajurusan.php" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Data Jurusan</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./tables/simple.html" class="nav-link">
+                    <a href="dataagama.php" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Data Agama</p>
                     </a>

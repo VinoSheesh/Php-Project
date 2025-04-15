@@ -371,7 +371,6 @@
                     margin-bottom: 1rem;
                     color: #212529;
                     background-color: transparent;
-                    border-collapse: collapse;
                   }
 
                   .table th,
@@ -509,13 +508,12 @@
 
                 <body>
 
-
                   <section class="content">
                     <div class="card">
                       <div class="card-header">
                         <h3 class="card-title">Tabel Siswa SMKN 6</h3>
                         <div class="card-tools">
-                          <a href="tambah_data_siswa.php" class="btn btn-primary">
+                          <a href="tambahSiswa.php" class="btn btn-primary">
                             <i class="fas fa-user-plus fa-sm mr-1"></i> + Tambah Siswa
                           </a>
                         </div>
@@ -546,16 +544,16 @@
                                 <tr>
                                   <td><?php echo $no++; ?></td>
                                   <td><?php echo $x['nisn']; ?></td>
-                                  <td><?php echo $x['nama']; ?></td>
+                                  <td class="text-nowrap"><?php echo $x['nama']; ?></td>
                                   <td><?php echo $jenis_kelamin; ?></td>
                                   <td><span class="badge badge-primary"><?php echo $x['nama_jurusan']; ?></span></td>
                                   <td><?php echo $x['kelas']; ?></td>
-                                  <td><?php echo $x['alamat']; ?></td>
+                                  <td class="text-nowrap"><?php echo $x['alamat']; ?></td>
                                   <td><?php echo $x['nama_agama']; ?></td>
                                   <td><?php echo $x['no_hp']; ?></td>
                                   <td>
                                     <div class="btn-group">
-                                      <a href="edit_siswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-info">
+                                      <a href="editsiswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-info">
                                         <i class="fas fa-edit fa-sm"></i> Edit
                                       </a>
                                       <a href="hapus_siswa.php?nisn=<?= $x['nisn']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data siswa ini?')">
@@ -568,8 +566,13 @@
                             </tbody>
                           </table>
 
-                          <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center mt-3">
+                          
+
+                        </div>
+                        
+                      </div>
+                      <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
                               <?php if ($page > 1): ?>
                                 <li class="page-item">
                                   <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
@@ -593,11 +596,10 @@
                               <?php endif; ?>
                             </ul>
                           </nav>
-
-                        </div>
-                      </div>
                     </div>
+                    
                   </section>
+                  
               </div>
 
               <!-- Bootstrap core JavaScript -->
